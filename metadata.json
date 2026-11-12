@@ -1,0 +1,8 @@
+{
+  "name": "Alight Motion Mitzy - Free Verification Service",
+  "description": "Layanan verifikasi akun Alight Motion Premium secara free, cepat, dan aman dalam beberapa detik.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
