@@ -7,10 +7,6 @@ const COOLDOWN_VERIF_MS = 2 * 60 * 1000;
 const COOLDOWN_VERIF_KEY = 'am_last_verif';
 
 export default function App() {
-  // Modal state
-  const [showWelcome, setShowWelcome] = useState(false);
-  const [noShowAgain, setNoShowAgain] = useState(false);
-
   // Form states
   const [email, setEmail] = useState('');
   const [verifyLink, setVerifyLink] = useState('');
@@ -63,17 +59,6 @@ export default function App() {
     return sisa > 0 ? sisa : 0;
   };
 
-  // Welcome popup timer on mount
-  useEffect(() => {
-    const hidePopup = localStorage.getItem('mitzy_popup_hidden');
-    if (hidePopup !== '1') {
-      const timer = setTimeout(() => {
-        setShowWelcome(true);
-      }, 700);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
   // Cooldown timers
   useEffect(() => {
     const updateTimers = () => {
@@ -102,31 +87,6 @@ export default function App() {
     const interval = setInterval(updateTimers, 1000);
     return () => clearInterval(interval);
   }, [isSending, sendBtnGreen]);
-
-  // Escape key handler for popup
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && showWelcome) {
-        setShowWelcome(false);
-      }
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [showWelcome]);
-
-  const closeWelcomePopup = () => {
-    setShowWelcome(false);
-  };
-
-  const toggleNoShow = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-    setNoShowAgain(checked);
-    if (checked) {
-      localStorage.setItem('mitzy_popup_hidden', '1');
-    } else {
-      localStorage.removeItem('mitzy_popup_hidden');
-    }
-  };
 
   const validEmail = (value: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -322,66 +282,23 @@ export default function App() {
 
   return (
     <main className="wrap">
-      {/* Welcome Popup Modal */}
+      {/* Top Banner Notice (Replaces Floating Modal) */}
       <div
-        id="welcome-popup"
-        className={`modal-overlay ${showWelcome ? 'show' : ''}`}
-        onClick={(e) => {
-          if (e.target === e.currentTarget) closeWelcomePopup();
+        style={{
+          background: 'var(--yellow)',
+          border: 'var(--border)',
+          borderRadius: '14px',
+          boxShadow: '4px 4px 0 var(--ink)',
+          padding: '12px 16px',
+          marginBottom: '18px',
+          textAlign: 'center',
+          fontWeight: 800,
+          fontSize: '12px',
+          lineHeight: 1.5,
+          color: 'var(--ink)',
         }}
       >
-        <div className="modal-box">
-          <button className="modal-close-btn" type="button" onClick={closeWelcomePopup}>
-            <i className="fa-solid fa-xmark"></i>
-          </button>
-          <div className="modal-badge">INFO PENTING</div>
-          <h2 className="modal-title">INFORMATION ALERT</h2>
-          <p className="modal-desc">
-            Join channel official &amp; support kami biar lu gak ketinggalan update dan informasi terbaru!
-          </p>
-          <div className="popup-btn-group">
-            <a
-              href="https://whatsapp.com/channel/0029Vb8wkiw89inmMKmI9a0X"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mc-btn btn-wa"
-            >
-              <i className="fa-brands fa-whatsapp"></i>
-              <span>Join WhatsApp</span>
-            </a>
-            <a
-              href="https://sociabuzz.com/mitzy_/donate"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mc-btn btn-donate"
-            >
-              <i className="fa-solid fa-heart"></i>
-              <span>Donate</span>
-            </a>
-            <a
-              href="https://youtu.be/ESTLie6gelI?si=opacQYYqBzEiqvJo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mc-btn btn-premium"
-            >
-              <i className="fa-solid fa-crown"></i>
-              <span>Tutorial Premium</span>
-            </a>
-          </div>
-          <button className="mc-btn btn-close" type="button" onClick={closeWelcomePopup}>
-            <i className="fa-solid fa-check"></i>
-            <span>Sudah Join / Tutup</span>
-          </button>
-          <label className="checkbox-container">
-            <input
-              type="checkbox"
-              id="no-show-again"
-              checked={noShowAgain}
-              onChange={toggleNoShow}
-            />
-            <span>Jangan tampilkan lagi</span>
-          </label>
-        </div>
+        Website ini milik orang lain tapi Ander Not dev yang scrape
       </div>
 
       {/* Topbar */}
@@ -560,8 +477,8 @@ export default function App() {
       {/* Footer */}
       <div className="footer">
         <div>© POWERED BY MITZY</div>
-        <div style={{ marginTop: '4px', fontSize: '10px', fontWeight: 700, color: '#707782', letterSpacing: '0.5px' }}>
-          Scrape by Andri Not Dev
+        <div style={{ marginTop: '5px', fontSize: '10px', fontWeight: 700, color: '#707782', letterSpacing: '0.5px' }}>
+          Scrape by Ander Not Dev
         </div>
       </div>
     </main>
